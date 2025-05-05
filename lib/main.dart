@@ -4,6 +4,8 @@ import 'package:grammer/grammer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'dart:math';
+
 void main() {
   // https://pub.dev/packages/word_generator
 
@@ -34,23 +36,33 @@ class MyAppState extends ChangeNotifier {
   // Word Generator: https://pub.dev/packages/word_generator/example
   static String getSentence(){
     final wordGen = WordGenerator();
-
-    // Get 3 verbs
-    List<String> verbs = wordGen.randomVerbs(3);
-    // I want 1 past tense, 1 present tense, and 1 gerund: https://pub.dev/packages/grammer
-    // Change the tense of the first generated verb
-    verbs[0] = verbs[0].toPast();
-    // Change the verb of the third verb
-    verbs[2] = verbs[2].toGerund();
-    // Nice, that was cool :)
-    // Get 2 name2
-    List<String> names = wordGen.randomNames(2);
-    // Get 3 nouns
-    List<String> nouns = wordGen.randomNouns(3);
-    String pluralNoun = nouns[1].toString().toPlural()[0];
-    //String creation: https://api.flutter.dev/flutter/dart-core/String-class.html
-    String sentence = "${names[0]} ${verbs[0]} to ${verbs[1]} the $pluralNoun of the ${nouns[0]} with ${names[1]} who was ${verbs[2]} with the ${nouns[2]}.";
-    return sentence;
+    // Output string
+    String sentence = "";
+    // https://dart-tutorial.com/dart-how-to/generate-random-number-in-dart/
+    final Random random = Random();
+    int question = random.nextInt(2);
+    // Not a question
+    if (question == 0) {
+      // Get 3 verbs
+      List<String> verbs = wordGen.randomVerbs(3);
+      // I want 1 past tense, 1 present tense, and 1 gerund: https://pub.dev/packages/grammer
+      // Change the tense of the first generated verb
+      verbs[0] = verbs[0].toPast();
+      // Change the verb of the third verb
+      verbs[2] = verbs[2].toGerund();
+      // Nice, that was cool :)
+      // Get 2 name2
+      List<String> names = wordGen.randomNames(2);
+      // Get 3 nouns
+      List<String> nouns = wordGen.randomNouns(3);
+      String pluralNoun = nouns[1].toString().toPlural()[0];
+      //String creation: https://api.flutter.dev/flutter/dart-core/String-class.html
+      sentence = "${names[0]} ${verbs[0]} to ${verbs[1]} the $pluralNoun of the ${nouns[0]} with ${names[1]} who was ${verbs[2]} with the ${nouns[2]}.";
+    } else {
+      // Yes, a question
+      sentence = "Did ${wordGen.randomName()} really ${wordGen.randomVerb()} that ${wordGen.randomNoun()}?";
+    } 
+  return sentence;
   }
 
   String sentence = getSentence();
